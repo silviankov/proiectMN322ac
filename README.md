@@ -6,3 +6,5 @@ Stan Octavian
 Cristescu Bogdan
 Nita Andrei
 Popescu Silviu
+
+Tema 12 Metoda puterii inverse pentru matrici 3x3
