@@ -38,9 +38,7 @@ function [A, tolerance, maxIterations] = readMatrix()
 	
 	%% default values
 	n = 3;
-	A = [   0, 1, 2,
-			1, 2, 3,
-			3, 4, 5];
+	A = [0, 1, 2; 1, 2, 3; 3, 4, 5];
 	tolerance = 5;
 	maxIterations = 25;
 	
