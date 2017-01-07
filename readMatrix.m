@@ -5,8 +5,8 @@
 % see https://github.com/DJakarta/inverse-power-method
 
 %% Versioning
-% V 1.0.1
-% Modified 05.01.2017 02:23
+% V 1.0.2
+% Modified 07.01.2017 14:59
 
 %% GUI read for inverse power method
 %	The function displays a GUI asking for a matrix, a value for tolerance
@@ -38,7 +38,9 @@ function [A, tolerance, maxIterations] = readMatrix()
 	
 	%% default values
 	n = 3;
-	A = [0, 1, 2; 1, 2, 3; 3, 4, 5];
+	A = [   0, 1, 2;
+			1, 2, 3;
+			3, 4, 5];
 	tolerance = 5;
 	maxIterations = 25;
 	
@@ -57,44 +59,40 @@ function [A, tolerance, maxIterations] = readMatrix()
 	mTable.RowStriping = 'off';
 
 	%table size from row and column computed size
-	mTableExtent = get(mTable, 'Extent');
-	set(mTable, 'Position', [0, 0, mTableExtent(3:4)]);
+	mTable.Position(3:4) = mTable.Extent(3:4);
 	
 	%text for matrix
 	mText = uicontrol(mFigure);
 	mText.Style = 'text';
 	mText.String = matrixInst;
-	mTextExtent = get(mText, 'Extent');
-	set(mText, 'Position', [0, 0, mTextExtent(3:4)]);
+	mText.Position(3:4) = mText.Extent(3:4);
 	
 	%% tolerance
 	%text for tolerance at the upper right corner of the matrix
 	tText = uicontrol(mFigure);
 	tText.Style = 'text';
 	tText.String = field1Inst;
-	tTextExtent = get(tText, 'Extent');
-	set(tText, 'Position', [0, 0, tTextExtent(3:4)]);
+	tText.Position(3:4) = tText.Extent(3:4);
 	
 	%field for tolerance below the text for tolerance
 	tField = uicontrol(mFigure);
 	tField.Style = 'edit';
 	tField.String = sprintf('%f', tolerance);
-	set(tField, 'Position', [0, 0, tTextExtent(3:4)]);
+	tField.Position(3:4) = tText.Extent(3:4);
 	
 	%% maximum iterations
 	%text for maximum iteration number below the field for tolerance
 	iText = uicontrol(mFigure);
 	iText.Style = 'text';
 	iText.String = field2Inst;
-	iTextExtent = get(iText, 'Extent');
-	set(iText, 'Position', [0, 0, iTextExtent(3:4)]);
+	iText.Position(3:4) = iText.Extent(3:4);
 	
 	%field for maximum iteration number below the text for maximum
 	%iteration number
 	iField = uicontrol(mFigure);
 	iField.Style = 'edit';
 	iField.String = sprintf('%d', maxIterations);
-	set(iField, 'Position', [0, 0, tTextExtent(3:4)]);
+	iField.Position(3:4) = tText.Extent(3:4);
 	
 	%% row 1 sizing
 	column1Width = max(mTable.Position(3), mText.Position(3));
