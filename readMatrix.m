@@ -5,22 +5,22 @@
 % see https://github.com/DJakarta/inverse-power-method
 
 %% Versioning
-% V 1.0.2
-% Modified 07.01.2017 14:59
+% V 1.0.3
+% Modified 07.01.2017 23:56
 
 %% GUI read for inverse power method
 %	The function displays a GUI asking for a matrix, a value for tolerance
 % and values for tolerance and maximum number of iterations, values which
-% can be used with the inverse power method.
+% can be used with the inverse power method. The dimension of the asked
+% matrix is given by the parameter "n".
 %	The instruction text and field regexp for number checking can be
 % customized using the GUI parameters.
 
 %% To do
-% -	general matrix dimensions
 % - instruction text size computed from all possible error texts
 % - add support for text and regexp cutomization via arguments
 
-function [A, tolerance, maxIterations] = readMatrix()
+function [A, tolerance, maxIterations] = readMatrix(n)
 	%% constants
 	endl = char(10);
 	
@@ -37,12 +37,13 @@ function [A, tolerance, maxIterations] = readMatrix()
 							'cu valoare numerica intreaga!'];
 	
 	%% default values
-	n = 3;
-	A = [   0, 1, 2;
-			1, 2, 3;
-			3, 4, 5];
 	tolerance = 5;
 	maxIterations = 25;
+	for i = 1 : n
+		for j = 1 : n
+			A(i, j) = (i - 1) * n + (j - 1)^2;
+		end
+	end
 	
 	%% figure
 	mFigure = figure(1);
