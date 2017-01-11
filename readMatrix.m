@@ -5,8 +5,8 @@
 % see https://github.com/DJakarta/inverse-power-method
 
 %% Versioning
-% V 1.0.3
-% Modified 07.01.2017 23:56
+% V 1.0.4
+% Modified 11.01.2017 02:20
 
 %% GUI read for inverse power method
 %	The function displays a GUI asking for a matrix, a value for tolerance
@@ -47,6 +47,9 @@ function [A, tolerance, maxIterations] = readMatrix(n)
 	
 	%% figure
 	mFigure = figure(1);
+	mFigure.MenuBar = 'none';
+	mFigure.ToolBar = 'none';
+	mFigure.Resize = 'off';
 	rowSpacing = 5;
 	
 	%% matrix table
@@ -59,37 +62,37 @@ function [A, tolerance, maxIterations] = readMatrix(n)
 	mTable.UserData = 0;
 	mTable.RowStriping = 'off';
 
-	%table size from row and column computed size
+	% table size from row and column computed size
 	mTable.Position(3:4) = mTable.Extent(3:4);
 	
-	%text for matrix
+	% text for matrix
 	mText = uicontrol(mFigure);
 	mText.Style = 'text';
 	mText.String = matrixInst;
 	mText.Position(3:4) = mText.Extent(3:4);
 	
 	%% tolerance
-	%text for tolerance at the upper right corner of the matrix
+	% text for tolerance at the upper right corner of the matrix
 	tText = uicontrol(mFigure);
 	tText.Style = 'text';
 	tText.String = field1Inst;
 	tText.Position(3:4) = tText.Extent(3:4);
 	
-	%field for tolerance below the text for tolerance
+	% field for tolerance below the text for tolerance
 	tField = uicontrol(mFigure);
 	tField.Style = 'edit';
 	tField.String = sprintf('%f', tolerance);
 	tField.Position(3:4) = tText.Extent(3:4);
 	
 	%% maximum iterations
-	%text for maximum iteration number below the field for tolerance
+	% text for maximum iteration number below the field for tolerance
 	iText = uicontrol(mFigure);
 	iText.Style = 'text';
 	iText.String = field2Inst;
 	iText.Position(3:4) = iText.Extent(3:4);
 	
 	%field for maximum iteration number below the text for maximum
-	%iteration number
+	% iteration number
 	iField = uicontrol(mFigure);
 	iField.Style = 'edit';
 	iField.String = sprintf('%d', maxIterations);
@@ -106,12 +109,12 @@ function [A, tolerance, maxIterations] = readMatrix(n)
 	row1Height = max(column1Height, column2Height);
 	
 	%% instruction row
-	%text for instructions
+	% text for instructions
 	instText = uicontrol(mFigure);
 	instText.Style = 'text';
 	instText.String = figInstDefault;
 	
-	%text position
+	% text position
 	row2Width = row1Width;
 	instText.Position(3) = row2Width;
 	instTextSpacing = rowSpacing;
@@ -149,11 +152,8 @@ function [A, tolerance, maxIterations] = readMatrix(n)
 	instText.Position(1:2) = [0, figureHeight - row1Height - row2Height];
 	okButton.Position(1:2) = [0, 0];
 	
-	%% misc
-	mFigure.Resize = 'off';
-	
 	%% callback
-	%callback function
+	% callback function
 	function okCallback(hObj, cbData, fig, table, field1, field1Regexp, ...
 			field2, field2Regexp, iText, matrixErrorInst, ...
 			field1ErrorInst, field2ErrorInst)
@@ -169,14 +169,14 @@ function [A, tolerance, maxIterations] = readMatrix(n)
 		end
 	end
 	
-	%set the callback function
+	% set the callback function
 	okButton.Callback = {@okCallback, mFigure, mTable, tField, ...
 						floatRegexp, iField, intRegexp, instText, ...
 						figInstMatrixErr, figInstField1Err, ...
 						figInstField2Err};
 	
 	%% halt function untill ok is pressed and conditions are met
-	%wait until the position is set to zero by the callback from the button
+	% wait until the position is set to zero by the callback from the button
 	waitfor(mFigure, 'UserData', 1);
 	
 	%% field value reading
