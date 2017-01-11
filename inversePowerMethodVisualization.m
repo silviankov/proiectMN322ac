@@ -19,7 +19,11 @@ function inversePowerMethodVisualization()
 	[A, tolerance, maxIterations] = readInputs();
 
 	%% processing
-
+    [vec_propriu, matErr, matVec_proprii] = metoda_puterii_inverse(A, tolerance, maxIterations);
+%     vec_propriu
+%     matErr
+%     matVec_proprii
+    
 	%% displaying
-	
+	drawFunction(matErr, matVec_proprii, tolerance, vec_propriu);
 end

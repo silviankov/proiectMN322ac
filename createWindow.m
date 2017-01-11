@@ -1,27 +1,29 @@
-function createWindow
+function createWindow(matErr, matVec_proprii, tolerance, vec_propriu)
 
 %%Test variables:
-tol = 0.05;                                                  %Tolerance
-iter = 50;                                                   %Iterations
-A = [ 1 , 2 , 3 ];                                           %Initial vector coordinates
-Target = [ 6 , 3 , 2 ];                                      %Target vector
+% tolerance = 0.05;                                                  %tolerance
+% iter = 50;                                                   %Iterations
+% A = [ 1 , 2 , 3 ];                                           %Initial vector coordinates
+% Target = [ 6 , 3 , 2 ];                                      %Target vector
+% 
+% matErr( 1 ) = 1;                                              %matErr vector initialiser
+% for i = 2 : iter
+%     matErr( i ) = matErr( i-1 ) - 1/100 * i;                   %String containing matErr at each iteration. < Accessible through matErr( iterNo ) >
+% end
+% 
+% for i = 1 : 3
+%     matVec_proprii( i ) = A( i );                                    %Test matVec_proprii of vectors intiliasier
+% end
+% 
+% for i = 2 : iter
+%         for j = 1 : 3
+%             matVec_proprii( i , j ) = ( i * ( 1 / 10 ) ) + A( j );   %Vector coordinates on each iteration. < Accessible through matVec_proprii( iterNo , : ) >
+%         end
+% end
 
-error( 1 ) = 1;                                              %error vector initialiser
-for i = 2 : iter
-    error( i ) = error( i-1 ) - 1/100 * i;                   %String containing error at each iteration. < Accessible through error( iterNo ) >
-end
-
-for i = 1 : 3
-    Matrix( i ) = A( i );                                    %Test matrix of vectors intiliasier
-end
-
-for i = 2 : iter
-        for j = 1 : 3
-            Matrix( i , j ) = ( i * ( 1 / 10 ) ) + A( j );   %Vector coordinates on each iteration. < Accessible through Matrix( iterNo , : ) >
-        end
-end
-
-    
+%% Receiving input
+iterations = length(matErr);
+Target = vec_propriu;
 
 %% Create draw window based on screen size
 scrnsz = get ( groot , 'ScreenSize' );
@@ -30,8 +32,8 @@ fig = figure ( 'Visible' , 'off' , 'Position' , [ scrnsz(3)/4 0 scrnsz(3)/2 scrn
            
 %% Horizontal control slider
 slider = uicontrol ( 'Parent' , fig , 'Style' , 'slider' , 'Units' , 'normalized' , 'Position' , [ 0.55 0.40 0.35 0.02 ] ,...
-                     'min' , 1 , 'max' , iter , 'Value' , 1 , ... 
-                     'SliderStep' , [ 1/(iter-1) , 1/(iter-1) ] , 'CallBack' , {@slider_callback} ); 
+                     'min' , 1 , 'max' , iterations , 'Value' , 1 , ... 
+                     'SliderStep' , [ 1/(iterations-1) , 1/(iterations-1) ] , 'CallBack' , {@slider_callback} ); 
 TitleBoxSlider = annotation ( 'textbox' );
 set ( TitleBoxSlider , 'FontSize' , 20 , 'String' , 'Iteration selector' , 'Position' , [ 0.65 0.37 0.1 0.1 ] ,...
       'EdgeColor' , 'none' , 'Color' , 'red' );
@@ -44,47 +46,47 @@ function slider_callback( source , ~ )
     t = floor( get ( source , 'Value' ) );
     %% 2D plots reinitialise
     axes(axXY);
-    vXY = [ Matrix( t , 1 ) , Matrix( t , 2 ) ; Target( 1 ) , Target( 2 )];
+    vXY = [ matVec_proprii( t , 1 ) , matVec_proprii( t , 2 ) ; Target( 1 ) , Target( 2 )];
     plot ( axXY , [ 0 , 0 ] );
     hold on;
-    quiver ( axXY , [ 0 , 0 ] , [ 0 , 0 ] , [ Matrix( t , 1 ) , Target( 1 ) ] , [ Matrix( t , 2 ) , Target( 2 ) ] , 0 );
+    quiver ( axXY , [ 0 , 0 ] , [ 0 , 0 ] , [ matVec_proprii( t , 1 ) , Target( 1 ) ] , [ matVec_proprii( t , 2 ) , Target( 2 ) ] , 0 );
     %patch( axXY , 'Vertices' , vXY , 'FaceColor' , 'red' , 'FaceAlpha' , .2 );
     title( '\color{Red}XY Plot' );
     hold off;
     
     axes(axXZ);
-    vXZ = [ Matrix( t , 1 ) , Matrix( t , 3 ) ; Target( 1 ) , Target( 3 ) ];
+    vXZ = [ matVec_proprii( t , 1 ) , matVec_proprii( t , 3 ) ; Target( 1 ) , Target( 3 ) ];
     plot ( axXZ , [ 0 , 0 ] );
     hold on;
     %patch( axXZ , 'Vertices' , vXZ , 'FaceColor' , 'red' , 'FaceAlpha' , .2 );
-    quiver ( axXZ , [ 0 , 0 ] , [ 0 , 0 ] , [ Matrix( t , 1 ) , Target( 1 ) ] , [ Matrix( t , 3 ) , Target( 3 ) ] );
+    quiver ( axXZ , [ 0 , 0 ] , [ 0 , 0 ] , [ matVec_proprii( t , 1 ) , Target( 1 ) ] , [ matVec_proprii( t , 3 ) , Target( 3 ) ] );
     title( '\color{Red}XZ Plot' );
     hold off;
     
     axes(axYZ);
-    vYZ = [ Matrix( t , 2 ) , Matrix( t , 3 ) ; Target( 2 ) , Target( 3 ) ];
+    vYZ = [ matVec_proprii( t , 2 ) , matVec_proprii( t , 3 ) ; Target( 2 ) , Target( 3 ) ];
     plot ( axYZ , [ 0 , 0 ] );
     hold on;
-    quiver ( axYZ , [ 0 , 0 ] , [ 0 , 0 ] , [ Matrix( t , 2 ) , Target( 2 ) ] , [ Matrix( t , 3 ) , Target( 3 ) ] );
+    quiver ( axYZ , [ 0 , 0 ] , [ 0 , 0 ] , [ matVec_proprii( t , 2 ) , Target( 2 ) ] , [ matVec_proprii( t , 3 ) , Target( 3 ) ] );
     %patch ( axYZ , 'Vertices' , vYZ , 'FaceColor' , 'red' , 'FaceAlpha' , .2 );
     title( '\color{Red}YZ Plot' );
     hold off;
     
     %% 3D plot reinitialise
     axes(ax3d);
-    quiver3 ( [ 0 , 0 ] , [ 0 , 0 ] , [ 0 , 0 ] , [ Matrix( t , 1 ) , Target( 1 ) ] , [ Matrix( t , 2 ) , Target( 2 ) ] ,...
-              [ Matrix( t , 3 ) , Target( 3 ) ] , 0 );
+    quiver3 ( [ 0 , 0 ] , [ 0 , 0 ] , [ 0 , 0 ] , [ matVec_proprii( t , 1 ) , Target( 1 ) ] , [ matVec_proprii( t , 2 ) , Target( 2 ) ] ,...
+              [ matVec_proprii( t , 3 ) , Target( 3 ) ] , 0 );
     title( '\color{Red}3D Plot' );
     
     %% Error plot reinitialise
     axes(axErr);
-    plot ( axErr , error(1:t) , '-*' );
-    set( gca , 'XTick' , 0:5:iter );
+    plot ( axErr , matErr(1:t) , '-*' );
+    set( gca , 'XTick' , 0:5:iterations );
     title( '\color{Red}Error' );
     
     %% Vector display reinitialise
-    set ( TextBoxVect , 'FontSize' , 20 , 'String' , [ 'Vector:  ' , num2str( Matrix( t , 1 ) ), '  ' , num2str( Matrix( t , 2 ) ), '  ' ,...
-        num2str( Matrix( t , 3) ) ] , 'Position' , [ .05 .3 .5 .025 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
+    set ( TextBoxVect , 'FontSize' , 20 , 'String' , [ 'Vector:  ' , num2str( matVec_proprii( t , 1 ) ), '  ' , num2str( matVec_proprii( t , 2 ) ), '  ' ,...
+        num2str( matVec_proprii( t , 3) ) ] , 'Position' , [ .05 .3 .5 .025 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
     
     %% Iteration textbox update
     set ( TextBoxSlider , 'FontSize' , 20 , 'String' , [ num2str(t) ], 'Position' , [ .91 .41 .3 .02 ] ,...
@@ -126,19 +128,19 @@ function slider3d_callback( source , ~ )
 end
 
 %% Lower Left text boxes
-TextBoxTol = annotation ( 'textbox' );
-set ( TextBoxTol , 'FontSize' , 20 , 'String' , [ 'Tolerance: ' , num2str(tol)  ], 'Position' , [ .05 .15 .5 .025 ] ,...
+TextBoxtolerance = annotation ( 'textbox' );
+set ( TextBoxtolerance , 'FontSize' , 20 , 'String' , [ 'tolerance: ' , num2str(tolerance)  ], 'Position' , [ .05 .15 .5 .025 ] ,...
       'EdgeColor' , 'none' , 'Color' , 'r' );
 
 TextBoxIter = annotation ( 'textbox' );
-set ( TextBoxIter , 'FontSize' , 20 , 'String' , [ 'Iterations required: ' , num2str(iter) ] , 'Position' , [ .05 .1 .5 .025 ] ,...
+set ( TextBoxIter , 'FontSize' , 20 , 'String' , [ 'Iterations required: ' , num2str(iterations-1) ] , 'Position' , [ .05 .1 .5 .025 ] ,...
       'EdgeColor' , 'none' , 'Color' , 'r' );
 
 %% Create a 2D plot of vertices with a patch for the ErrorArea and a Vertex representing the Error
 %XY plot
 axXY = axes('Units','normal','Position',[ .55 .75 .4 .2 ]);
-vXY = [ Matrix( 1 , 1 ) , Matrix( 1 , 2 ) ; Target( 1 ) , Target( 2 ) ; 0 , 0];
-quiver ( axXY , [ 0 , 0 ] , [ 0 , 0 ] , [ Matrix( 1 , 1 ) , Target( 1 ) ] , [ Matrix( 1 , 2 ) , Target( 2 ) ] , 0 );
+vXY = [ matVec_proprii( 1 , 1 ) , matVec_proprii( 1 , 2 ) ; Target( 1 ) , Target( 2 ) ; 0 , 0];
+quiver ( axXY , [ 0 , 0 ] , [ 0 , 0 ] , [ matVec_proprii( 1 , 1 ) , Target( 1 ) ] , [ matVec_proprii( 1 , 2 ) , Target( 2 ) ] , 0 );
 hold on;
 patch( axXY , 'Vertices' , vXY , 'FaceColor' , 'red' , 'FaceAlpha' , .2 );
 title('\color{Red}XY Plot');
@@ -146,19 +148,19 @@ hold off;
 
 %XZ plot
 axXZ = axes('Units','normal','Position',[ .05 .50 .4 .2 ]);
-vXZ = [ Matrix( 1 , 1 ) , Matrix( 1 , 3 ) ; Target( 1 ) , Target( 3 ) ; 0 , 0];
+vXZ = [ matVec_proprii( 1 , 1 ) , matVec_proprii( 1 , 3 ) ; Target( 1 ) , Target( 3 ) ; 0 , 0];
 hold on;
 patch( axXZ , 'Vertices' , vXZ , 'FaceColor' , 'green' , 'FaceAlpha' , .2 );
-quiver ( axXZ , [ 0 , 0 ] , [ 0 , 0 ] , [ Matrix( 1 , 1 ) , Target( 1 ) ] , [ Matrix( 1 , 3 ) , Target( 3 ) ] , 0 );
+quiver ( axXZ , [ 0 , 0 ] , [ 0 , 0 ] , [ matVec_proprii( 1 , 1 ) , Target( 1 ) ] , [ matVec_proprii( 1 , 3 ) , Target( 3 ) ] , 0 );
 title('\color{Red}XZ Plot');
 hold off;
 
 %YZ plot
 axYZ = axes('Units','normal','Position',[ .55 .50 .4 .2 ]);
-vYZ = [ Matrix( 1 , 2 ) , Matrix( 1 , 3 ) ; Target( 2 ) , Target( 3 ) ; 0 , 0];
+vYZ = [ matVec_proprii( 1 , 2 ) , matVec_proprii( 1 , 3 ) ; Target( 2 ) , Target( 3 ) ; 0 , 0];
 hold on;
 patch( axYZ , 'Vertices' , vYZ , 'FaceColor' , 'yellow' , 'FaceAlpha' , .2 );
-quiver ( axYZ , [ 0 , 0 ] , [ 0 , 0 ] , [ Matrix( 1 , 2 ) , Target( 2 ) ] , [ Matrix( 1 , 3 ) , Target( 3 ) ] , 0 );
+quiver ( axYZ , [ 0 , 0 ] , [ 0 , 0 ] , [ matVec_proprii( 1 , 2 ) , Target( 2 ) ] , [ matVec_proprii( 1 , 3 ) , Target( 3 ) ] , 0 );
 title('\color{Red}YZ Plot');
 hold off;
 
@@ -167,15 +169,15 @@ ax3d = axes('Units','normal','Position',[ .05 .75 .4 .2 ]);
 quiver3( [ 0 , 0 ] , [ 0 , 0 ] , [ 0 , 0 ] , [ A( 1 ) , Target( 1 ) ] , [ A( 2 ) , Target( 2 ) ] , [ A( 3 ) , Target( 3 ) ] , 0 );
 title('\color{Red}3D Plot : Default viewpoint');
 
-%% Display error plot
+%% Display matErr plot
 axErr = axes('Units','normal','Position',[ .55 .05 .4 .25 ]);
-plot ( axErr , error , '-*' );
-set( gca , 'XTick' , 0:5:iter );
+plot ( axErr , matErr , '-*' );
+set( gca , 'XTick' , 0:5:iterations );
 title('\color{Red}Error');
 
 %% Display actual vector
 TextBoxVect = annotation ( 'textbox' );
-set ( TextBoxVect , 'FontSize' , 20 , 'String' , [ 'Vector: ' , num2str( Matrix( 1 , 1 ) ), ' ' , num2str( Matrix( 1 , 2 ) ), ' ' , num2str( Matrix( 1 , 3) ) ] ,...
+set ( TextBoxVect , 'FontSize' , 20 , 'String' , [ 'Vector: ' , num2str( matVec_proprii( 1 , 1 ) ), ' ' , num2str( matVec_proprii( 1 , 2 ) ), ' ' , num2str( matVec_proprii( 1 , 3) ) ] ,...
       'Position' , [ .05 .3 .5 .025 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
 
   %% Display target vector

@@ -1,4 +1,4 @@
-function [ vec_proprii, matErr, matVec_proprii  ] = metoda_puterii_inverse( A, toleranta, iteratiiMax )
+function [vec_propriu, matErr, matVec_propriu] = metoda_puterii_inverse( A, toleranta, iteratiiMax )
 % METODA_PUTERII_INVERSE 
 % Proiect MN 322AC 2016-2017 Sem1
 
@@ -9,16 +9,17 @@ function [ vec_proprii, matErr, matVec_proprii  ] = metoda_puterii_inverse( A, t
     i = 0;
     err = 1;
     
-    matVec_proprii = zeros(iteratiiMax+1,n);
+    matVec_propriu = zeros(iteratiiMax+1,n);
     matErr = zeros(iteratiiMax+1,1);
     
-    matVec_proprii(i+1,:) = y';
+    matVec_propriu(i+1,:) = y';
     matErr(i+1,1) = err;
     
     while (err > toleranta) 
  
        if (i > iteratiiMax) 
-           disp ('S-a atins numarul maxim de iteratii fara sa se obtina nivelul prescris al tolerantei.') 
+%            disp ('S-a atins numarul maxim de iteratii fara sa se obtina nivelul prescris al tolerantei.') 
+           msgbox('S-a atins numarul maxim de iteratii fara sa se obtina nivelul prescris al tolerantei.')
            break;
        end
        
@@ -29,8 +30,8 @@ function [ vec_proprii, matErr, matVec_proprii  ] = metoda_puterii_inverse( A, t
        y = z;
        i = i+1;
        if (i <= iteratiiMax)
-            vec_proprii = y;
-            matVec_proprii(i+1,:) = vec_proprii';
+            vec_propriu = y;
+            matVec_propriu(i+1,:) = vec_propriu';
             matErr(i+1,1) = err;
        end
     end

@@ -1,9 +1,14 @@
-%% Create draw window
+function drawFunction(matErr, matVec_proprii, tolerance, vec_propriu)
+% Create draw window
 %Window dimension based on main display dimensions. Multiple display setups
 %might encounter out of bounds windows if display resolutions vary.
-dim = 7;
-if dim == 3
-    createWindow;
+
+if size(matErr(1,:)) == 3
+    createWindow(matErr, matVec_proprii, tolerance, vec_propriu);
 else
-    createWindowN(dim);
+    createWindowN(matErr, matVec_proprii, tolerance, vec_propriu);
 end
+
+end
+
+
