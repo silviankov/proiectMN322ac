@@ -1,33 +1,36 @@
-function createWindowN(dim)
-
-
+function createWindowN(matErr, matVec_proprii, tolerance, vec_propriu)
 
 %%Test variables:
-tol = 0.05;                                                  %Tolerance
-iter = 50;                                                   %Iterations
-for i = 1 : dim
-    A( i ) = i;                                              %Initial vector coordinates
-end
+% tolerance = 0.05;                                                  %Tolerance
+% iterations = 50;                                                   %Iterations
+% for i = 1 : dim
+%     A( i ) = i;                                              %Initial vector coordinates
+% end
+% 
+% for i = 1 : dim
+%     Target( i ) = i*3 ;                                        %Target vector
+% end
+% 
+% for i = 1 : dim
+%     matVec_proprii( 1 , i ) = A( i );                                %Test matVec_proprii of vectors initialiser             
+% end
+% 
+% 
+% for i = 2 : iterations
+%     for j = 1 : dim
+%         matVec_proprii( i , j ) = A( j ) + ( i * ( 1 / 10 ) );                            %Vector coordinates on each iteration. < Accessible through matVec_proprii( iterNo , : ) >
+%     end
+% end
+% 
+% matErr( 1 ) = 1;                                              %matErr vector initialiser
+% for i = 2 : iterations
+%     matErr( i ) = matErr( i-1 ) - 1/100 * i;                   %String containing matErr at each iteration. < Accessible through matErr( iterNo ) >
+% end
 
-for i = 1 : dim
-    Target( i ) = i*3 ;                                        %Target vector
-end
-
-for i = 1 : dim
-    Matrix( 1 , i ) = A( i );                                %Test matrix of vectors initialiser             
-end
-
-
-for i = 2 : iter
-    for j = 1 : dim
-        Matrix( i , j ) = A( j ) + ( i * ( 1 / 10 ) );                            %Vector coordinates on each iteration. < Accessible through Matrix( iterNo , : ) >
-    end
-end
-
-error( 1 ) = 1;                                              %error vector initialiser
-for i = 2 : iter
-    error( i ) = error( i-1 ) - 1/100 * i;                   %String containing error at each iteration. < Accessible through error( iterNo ) >
-end
+%% Receiving input
+iterations = length(matErr);
+dim = length(matVec_proprii(1,:));
+Target = vec_propriu;
 
 %% Create draw window based on screen size
 scrnsz = get ( groot , 'ScreenSize' );
@@ -36,8 +39,8 @@ fig = figure ( 'Visible' , 'on' , 'Position' , [ scrnsz(3)/4 0 scrnsz(3)/2 scrns
            
 %% Horizontal control slider
 slider = uicontrol ( 'Parent' , fig , 'Style' , 'slider' , 'Units' , 'normalized' , 'Position' , [ 0.55 0.60 0.35 0.02 ] ,...
-                     'min' , 1 , 'max' , iter , 'Value' , 1 , ... 
-                     'SliderStep' , [ 1/(iter-1) , 1/(iter-1) ] , 'CallBack' , {@slider_callback} ); 
+                     'min' , 1 , 'max' , iterations , 'Value' , 1 , ... 
+                     'SliderStep' , [ 1/(iterations-1) , 1/(iterations-1) ] , 'CallBack' , {@slider_callback} ); 
 TitleBoxSlider = annotation ( 'textbox' );
 set ( TitleBoxSlider , 'FontSize' , 20 , 'String' , 'Iteration selector' , 'Position' , [ 0.65 0.61 0.1 0.1 ] ,...
       'EdgeColor' , 'none' , 'Color' , 'red' );
@@ -54,12 +57,12 @@ function slider_callback( source , data )
      
      %% Error plot reinitialise
      axes(axErr);
-     plot ( axErr , error(1:t) , '-*' );
-     set( gca , 'XTick' , 0:5:iter );
+     plot ( axErr , matErr(1:t) , '-*' );
+     set( gca , 'XTick' , 0:5:iterations );
      title( '\color{Red}Error' );
      
      %% Vector display update
-     set ( TextBoxVect , 'FontSize' , 40 , 'String' , [ 'Vector: ' , num2str( Matrix( t , 1 ) ), ' ' , num2str( Matrix( t , 2 ) ), ' ' , num2str( Matrix( t , 3) ) ] ,...
+     set ( TextBoxVect , 'FontSize' , 40 , 'String' , [ 'Vector: ' , num2str( matVec_proprii( t , 1 ) ), ' ' , num2str( matVec_proprii( t , 2 ) ), ' ' , num2str( matVec_proprii( t , 3) ) ] ,...
       'Position' , [ .05 .85 .5 .04 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
     
      %% Iteration textbox update
@@ -68,7 +71,7 @@ function slider_callback( source , data )
      
 end
 
-%% Matrix viewpoint slider
+%% matVec_proprii viewpoint slider
 
 mtxSlider = uicontrol( 'Parent' , fig , 'Style' , 'slider' , 'Units' , 'normalized' , 'Position' , [ 0.05 0.6 0.35 0.02 ] , ...
                        'min' , 1 , 'max' , dim-2 , 'Value' , 1 , ...
@@ -79,21 +82,21 @@ function mtxSlider_callback( source , data )
     t = floor ( get ( source , 'Value' ) );
     line = floor ( get ( slider , 'Value' ) );
     %% Actual vector display update
-    set ( TextBoxVect , 'FontSize' , 40 , 'String' , [ 'Vector: ' , num2str( Matrix( line , t ) ), ' ' , num2str( Matrix( line , t+1 ) ), ' ' , num2str( Matrix( line , t+2 ) ) ] ,...
+    set ( TextBoxVect , 'FontSize' , 40 , 'String' , [ 'Vector: ' , num2str( matVec_proprii( line , t ) ), ' ' , num2str( matVec_proprii( line , t+1 ) ), ' ' , num2str( matVec_proprii( line , t+2 ) ) ] ,...
       'Position' , [ .05 .85 .5 .04 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
     set ( TitleBoxVect , 'FontSize' , 30 , 'String' , [ 'Vector columns ' , num2str(t), ' through ' , num2str(t+2) ] ,...
       'Position' , [ .05 .91 .5 .04 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
 end
 
-%% Display error plot
+%% Display matErr plot
 axErr = axes('Units','normal','Position',[ .35 .05 .6 .5 ]);
-plot ( axErr , error , '-*' );
-set( gca , 'XTick' , 0:5:iter );
+plot ( axErr , matErr , '-*' );
+set( gca , 'XTick' , 0:5:iterations );
 title('\color{Red}Error' , 'FontSize' , 20);
 
 %% Display actual vector
 TextBoxVect = annotation ( 'textbox' );
-set ( TextBoxVect , 'FontSize' , 40 , 'String' , [ 'Vector: ' , num2str( Matrix( 1 , 1 ) ), ' ' , num2str( Matrix( 1 , 2 ) ), ' ' , num2str( Matrix( 1 , 3) ) ] ,...
+set ( TextBoxVect , 'FontSize' , 40 , 'String' , [ 'Vector: ' , num2str( matVec_proprii( 1 , 1 ) ), ' ' , num2str( matVec_proprii( 1 , 2 ) ), ' ' , num2str( matVec_proprii( 1 , 3) ) ] ,...
       'Position' , [ .05 .85 .5 .04 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
 TitleBoxVect = annotation ( 'textbox' );
 set ( TitleBoxVect , 'FontSize' , 30 , 'String' , [ 'Vector columns ' , num2str(1), ' through ' , num2str(3) ] ,...
@@ -105,11 +108,11 @@ set ( TextBoxTarget , 'FontSize' , 40 , 'String' , [ 'Target: ' , num2str( Targe
 
   %% Lower Left text boxes
 TextBoxTol = annotation ( 'textbox' );
-set ( TextBoxTol , 'FontSize' , 20 , 'String' , [ 'Tolerance: ' , num2str(tol)  ], 'Position' , [ .05 .15 .5 .025 ] ,...
+set ( TextBoxTol , 'FontSize' , 20 , 'String' , [ 'Tolerance: ' , num2str(tolerance)  ], 'Position' , [ .05 .15 .5 .025 ] ,...
       'EdgeColor' , 'none' , 'Color' , 'r' );
 
 TextBoxIter = annotation ( 'textbox' );
-set ( TextBoxIter , 'FontSize' , 20 , 'String' , [ 'Iterations required: ' , num2str(iter) ] , 'Position' , [ .05 .1 .5 .025 ] ,...
+set ( TextBoxIter , 'FontSize' , 20 , 'String' , [ 'Iterations required: ' , num2str(iterations-1) ] , 'Position' , [ .05 .1 .5 .025 ] ,...
       'EdgeColor' , 'none' , 'Color' , 'r' );
 
   
