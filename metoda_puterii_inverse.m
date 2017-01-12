@@ -35,5 +35,12 @@ function [vec_propriu, matErr, matVec_propriu] = metoda_puterii_inverse( A, tole
             matErr(i+1,1) = err;
        end
     end
+    
+    for j = i+1:iteratiiMax
+        if (j <= iteratiiMax)
+            matVec_propriu(j+1,:) = vec_propriu';
+            matErr(j+1,1) = err;
+       end
+    end
 end
 

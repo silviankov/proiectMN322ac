@@ -35,7 +35,7 @@ Target = vec_propriu;
 %% Create draw window based on screen size
 scrnsz = get ( groot , 'ScreenSize' );
 fig = figure ( 'Visible' , 'on' , 'Position' , [ scrnsz(3)/4 0 scrnsz(3)/2 scrnsz(4) ] , 'NumberTitle' , 'off' , 'Name' , ...
-               'Reverse Power Method' , 'ToolBar' , 'none' , 'Color' , 'b' , 'MenuBar' , 'none');
+               'Reverse Power Method' , 'ToolBar' , 'none' , 'Color', 'y', 'MenuBar' , 'none');
            
 %% Horizontal control slider
 slider = uicontrol ( 'Parent' , fig , 'Style' , 'slider' , 'Units' , 'normalized' , 'Position' , [ 0.55 0.60 0.35 0.02 ] ,...
@@ -52,7 +52,7 @@ function slider_callback( source , data )
     
      t = floor( get ( source , 'Value' ) );
      set( mtxSlider , 'Value' , 1 );
-     set ( TitleBoxVect , 'FontSize' , 30 , 'String' , [ 'Vector columns ' , num2str(1), ' through ' , num2str(3) ] ,...
+     set ( TitleBoxVect , 'FontSize' , 20 , 'String' , [ 'Vector columns ' , num2str(1), ' through ' , num2str(3) ] ,...
       'Position' , [ .05 .91 .5 .04 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
      
      %% Error plot reinitialise
@@ -62,7 +62,7 @@ function slider_callback( source , data )
      title( '\color{Red}Error' );
      
      %% Vector display update
-     set ( TextBoxVect , 'FontSize' , 40 , 'String' , [ 'Vector: ' , num2str( matVec_proprii( t , 1 ) ), ' ' , num2str( matVec_proprii( t , 2 ) ), ' ' , num2str( matVec_proprii( t , 3) ) ] ,...
+     set ( TextBoxVect , 'FontSize' , 20 , 'String' , [ 'Vector: ' , num2str( matVec_proprii( t , 1 ) ), ' ' , num2str( matVec_proprii( t , 2 ) ), ' ' , num2str( matVec_proprii( t , 3) ) ] ,...
       'Position' , [ .05 .85 .5 .04 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
     
      %% Iteration textbox update
@@ -82,8 +82,10 @@ function mtxSlider_callback( source , data )
     t = floor ( get ( source , 'Value' ) );
     line = floor ( get ( slider , 'Value' ) );
     %% Actual vector display update
-    set ( TextBoxVect , 'FontSize' , 40 , 'String' , [ 'Vector: ' , num2str( matVec_proprii( line , t ) ), ' ' , num2str( matVec_proprii( line , t+1 ) ), ' ' , num2str( matVec_proprii( line , t+2 ) ) ] ,...
+    set ( TextBoxVect , 'FontSize' , 20 , 'String' , [ 'Vector: ' , num2str( matVec_proprii( line , t ) ), ' ' , num2str( matVec_proprii( line , t+1 ) ), ' ' , num2str( matVec_proprii( line , t+2 ) ) ] ,...
       'Position' , [ .05 .85 .5 .04 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
+    set ( TextBoxTarget , 'FontSize' , 20 , 'String' , [ 'Target ' , num2str( vec_propriu( t ) ), ' ' , num2str( vec_propriu( t+1 ) ), ' ' , num2str( vec_propriu( t+2 ) ) ] ,...
+      'Position' , [ .05 .75 .5 .04 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
     set ( TitleBoxVect , 'FontSize' , 30 , 'String' , [ 'Vector columns ' , num2str(t), ' through ' , num2str(t+2) ] ,...
       'Position' , [ .05 .91 .5 .04 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
 end
@@ -96,14 +98,14 @@ title('\color{Red}Error' , 'FontSize' , 20);
 
 %% Display actual vector
 TextBoxVect = annotation ( 'textbox' );
-set ( TextBoxVect , 'FontSize' , 40 , 'String' , [ 'Vector: ' , num2str( matVec_proprii( 1 , 1 ) ), ' ' , num2str( matVec_proprii( 1 , 2 ) ), ' ' , num2str( matVec_proprii( 1 , 3) ) ] ,...
+set ( TextBoxVect , 'FontSize' , 20 , 'String' , [ 'Vector: ' , num2str( matVec_proprii( 1 , 1 ) ), ' ' , num2str( matVec_proprii( 1 , 2 ) ), ' ' , num2str( matVec_proprii( 1 , 3) ) ] ,...
       'Position' , [ .05 .85 .5 .04 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
 TitleBoxVect = annotation ( 'textbox' );
 set ( TitleBoxVect , 'FontSize' , 30 , 'String' , [ 'Vector columns ' , num2str(1), ' through ' , num2str(3) ] ,...
       'Position' , [ .05 .91 .5 .04 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
   %% Display target vector
 TextBoxTarget = annotation ( 'textbox' );
-set ( TextBoxTarget , 'FontSize' , 40 , 'String' , [ 'Target: ' , num2str( Target( 1 ) ), ' ' , num2str( Target( 2 ) ), ' ' , num2str( Target( 3 ) ) ] ,...
+set ( TextBoxTarget , 'FontSize' , 20 , 'String' , [ 'Target: ' , num2str( Target( 1 ) ), ' ' , num2str( Target( 2 ) ), ' ' , num2str( Target( 3 ) ) ] ,...
       'Position' , [ .05 .75 .5 .04 ] , 'EdgeColor' , 'none' , 'Color' , 'r' );
 
   %% Lower Left text boxes

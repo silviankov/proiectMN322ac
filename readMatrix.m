@@ -37,7 +37,7 @@ function [A, tolerance, maxIterations] = readMatrix(n)
 							'cu valoare numerica intreaga!'];
 	
 	%% default values
-	tolerance = 5;
+	tolerance =0.001;
 	maxIterations = 25;
 	for i = 1 : n
 		for j = 1 : n
